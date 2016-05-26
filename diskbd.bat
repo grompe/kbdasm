@@ -8,7 +8,7 @@
 ;"%~pd0fasm\fasm.exe" "%~df0" %~n1_source.asm
 ;goto:eof
 ;:usage
-;echo Usage: diskbd.bat ^<kbdfile.dll^> - produce diskbd.asm
+;echo Usage: diskbd.bat ^<kbdfile.dll^> - produce kbdfile_source.asm
 ;goto:eof
 use32
 include "%frombat%not_standalone.inc"
