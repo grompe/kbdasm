@@ -20,7 +20,7 @@ USE_LIGATURES = 1 ; There is a bug in Firefox, if ligatures contain more than
 USE_KANA = 1 ; Use Kana key to switch between English and Russian layout
 DEBUG = 0
 
-section ".data" readable
+section ".data" readable executable
 
 keynames:
     dp 01h, "ESC"

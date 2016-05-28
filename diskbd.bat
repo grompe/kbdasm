@@ -584,7 +584,7 @@ db 'NONE = WCH_NONE',13,10
 db 'DEAD = WCH_DEAD',13,10
 db 'LGTR = WCH_LGTR',13,10
 db 13,10
-db 'section ".data" readable',13,10
+db 'section ".data" readable executable',13,10
 db 13,10
 
 ; ----------------------------------------------------------------------------

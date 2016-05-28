@@ -18,7 +18,7 @@ USE_LIGATURES = 1 ; There is a bug in Firefox, if ligatures contain more than
                   ; http://www.unicode.org/mail-arch/unicode-ml/y2015-m08/0012.html
 DEBUG = 0
 
-section ".data" readable
+section ".data" readable executable
 
 keynames:
     dp 01h, "ESC"
