@@ -32,7 +32,7 @@ goto:eof
 :yes
 copy %target% %windir%\system32\ >nul 2>&1
 if errorlevel 1 goto:cannotcopy
-for /f %%i in ('ver ^| find "Version 5"') do set nt5=yes
+for /f %%i in ('ver ^| %windir%\system32\find "Version 5"') do set nt5=yes
 if not exist %windir%\system32\reg.exe goto:manualreg
 set key="HKLM\SYSTEM\CurrentControlSet\Control\Keyboard Layouts\%id%"
 reg add %key% /f >nul 2>&1

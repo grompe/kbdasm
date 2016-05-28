@@ -8,12 +8,12 @@ set target=kbdusru_undead.dll
 if not exist %target% goto:notexist
 set d=################################
 echo %d%%d%%d%%d%%d%%d%%d%%d%>__dummy__.txt
-for /f "tokens=3" %%i in ('fc /b __dummy__.txt %target% ^| find "003C:"') do set pe=%%i
-for /f "tokens=3" %%i in ('fc /b __dummy__.txt %target% ^| find "00%pe%:"') do set sig=%%i
+for /f "tokens=3" %%i in ('fc /b __dummy__.txt %target% ^| %windir%\system32\find "003C:"') do set pe=%%i
+for /f "tokens=3" %%i in ('fc /b __dummy__.txt %target% ^| %windir%\system32\find "00%pe%:"') do set sig=%%i
 if not %sig%==50 goto:notvalid
 set /a h=0x%pe%+4
 call:tohex %h%
-for /f "tokens=3" %%i in ('fc /b __dummy__.txt %target% ^| find "00%hex%:"') do set arch=%%i
+for /f "tokens=3" %%i in ('fc /b __dummy__.txt %target% ^| %windir%\system32\find "00%hex%:"') do set arch=%%i
 if %processor_architecture%==x86 goto:x86
 if %processor_architecture%==AMD64 goto:amd64
 del __dummy__.txt
