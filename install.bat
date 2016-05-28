@@ -25,7 +25,7 @@ net file >nul 2>&1
 if not %errorlevel%==0 goto:notadmin
 set /p answer="Do you want to install %target% in your system? [Y/N] "
 if "%answer%"=="" goto:no
-if "%answer:~0,1%"=="y" goto:yes
+if /I "%answer:~0,1%"=="y" goto:yes
 :no
 echo Cancelled.
 goto:eof
