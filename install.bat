@@ -1,20 +1,25 @@
 @echo off
 if not "%cd%"\=="%~pd0" cd /d "%~pd0"
 set target=%1
+
+:: Change the following four parameters when installing custom layouts
 set shortname="US+"
 set longname="United States-Custom"
 set id=07430409
-set cat="English - US"
+set lid=00d1
+
 if not "%target%"=="" goto:skipdefault
 set target=kbdusru_undead.dll
 set shortname="US+RU"
 set longname="United States-International + Russian + Extra"
 set id=07430419
-set cat="Russian"
+set lid=00d0
 :skipdefault
 if not exist %target% goto:notexist
 if exist %windir%\system32\%target% goto:alreadyexist
 call checkdll %target%
+if errorlevel 1 goto:eof
+call checklid %lid%
 if errorlevel 1 goto:eof
 net file >nul 2>&1
 if not %errorlevel%==0 goto:notadmin
@@ -35,12 +40,11 @@ if errorlevel 1 goto:cannotreg
 reg add %key% /f /v "Layout Text" /t REG_SZ /d %shortname% >nul 2>&1
 reg add %key% /f /v "Layout Display Name" /t REG_SZ /d %longname% >nul 2>&1
 reg add %key% /f /v "Layout File" /t REG_SZ /d "%target%" >nul 2>&1
-reg add %key% /f /v "Layout Id" /t REG_SZ /d 00d0 >nul 2>&1
+reg add %key% /f /v "Layout Id" /t REG_SZ /d %lid% >nul 2>&1
 if errorlevel 1 goto:cannotreg
 if not x%nt5%==xyes reg_layout r 0x%id:~4,4%:0x%id%
 if errorlevel 1 goto:cannotreg2
-echo The job is done. Now you should have additional layout under %cat%
-echo called %longname%
+echo The job is done. Now you should have additional layout called %longname%
 goto:eof
 :manualreg
 echo REGEDIT4>>_install.reg
@@ -49,13 +53,12 @@ echo [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layouts\%id%]
 echo "Layout Text"=%shortname%>>_install.reg
 echo "Layout Display Name"=%longname%>>_install.reg
 echo "Layout File"="%target%">>_install.reg
-echo "Layout Id"="00d0">>_install.reg
+echo "Layout Id"="%lid%">>_install.reg
 _install.reg
 if errorlevel 1 goto:cannotreg
 if not x%nt5%==xyes reg_layout r 0x%id:~4,4%:0x%id%
 if errorlevel 1 goto:cannotreg2
-echo The job is done. Now you should have additional layout under %cat%
-echo called %longname%
+echo The job is done. Now you should have additional layout called %longname%
 goto:eof
 :notexist
 echo There is no %target% here, compile it first!
