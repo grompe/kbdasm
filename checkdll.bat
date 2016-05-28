@@ -1,5 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
+set PATH=%SYSTEMROOT%\system32\;%PATH%
 if not "%cd%"\=="%~pd0" cd /d "%~pd0"
 set target=%1
 if not "%target%"=="" goto:skipdefault
