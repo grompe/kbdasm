@@ -569,6 +569,7 @@ deadkeys:
     du "ifﬁ", 0
     du "ffﬀ", 0
     du "lfﬂ", 0
+    du "ni∫", 0
     du "ufƒ", 0
     du "oo•", 0
     du "es§", 0
