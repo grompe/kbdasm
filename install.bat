@@ -17,6 +17,7 @@ set lid=00d0
 :skipdefault
 if not exist %target% goto:notexist
 if exist %windir%\system32\%target% goto:alreadyexist
+if exist %windir%\sysnative\cmd.exe goto:relaunch64
 call checkdll %target%
 if errorlevel 1 goto:eof
 call checklid %lid%
@@ -79,4 +80,7 @@ goto:eof
 :notadmin
 echo To install, you must run this command with administrative privilegies.
 cscript elevate.js "%~df0" %* >nul
+goto:eof
+:relaunch64
+%windir%\sysnative\cmd.exe /c "%~df0" %*
 goto:eof
