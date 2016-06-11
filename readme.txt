@@ -20,6 +20,14 @@ How to modify an existing keyboard layout
 3. >make.bat kbdtarget_source.asm
 
 
+How to install Workman keyboard layout
+======================================
+1. >install_workman.bat
+2. >open_control_input.bat
+3. Set the new keyboard layout
+4. Restart programs you're typing in
+
+
 How to install custom keyboard layout
 =====================================
 1. >install.bat kbdtarget.dll
