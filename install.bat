@@ -1,29 +1,35 @@
 @echo off
 if not "%cd%"\=="%~pd0" cd /d "%~pd0"
 set target=%1
+set dest=%~nx1
 
-:: Change the following four parameters when installing custom layouts
-set shortname="US+"
-set longname="United States-Custom"
-set id=07430409
-set lid=00d1
-
-if not "%target%"=="" goto:skipdefault
-set target=kbdusru_undead.dll
-set shortname="US+RU"
-set longname="United States-International + Russian + Extra"
-set id=07430419
-set lid=00d0
-:skipdefault
+if "%target%"=="" (
+  set target=kbdusru_undead.dll
+  set dest=kbdusru_undead.dll
+  set lid=00d0
+  set id=07430419
+  set shortname="US+RU"
+  set longname="United States-International + Russian + Extra"
+) else (
+  set id=07430409
+  if not "%2"=="" set id=%2
+  set lid=00d1
+  if not "%3"=="" set lid=%3
+  set shortname="US+"
+  if not "%~4"=="" set shortname=%4
+  set longname="United States-Custom"
+  if not "%~5"=="" set longname=%5
+)
 if not exist %target% goto:notexist
-if exist %windir%\system32\%target% goto:alreadyexist
+if exist %windir%\system32\%dest% goto:alreadyexist
 if exist %windir%\sysnative\cmd.exe goto:relaunch64
 call checkdll %target%
 if errorlevel 1 goto:eof
-call checklid %lid%
-if errorlevel 1 goto:eof
 net file >nul 2>&1
 if not %errorlevel%==0 goto:notadmin
+echo Checking keyboard layout IDs, please wait...
+call checklid %lid%
+if errorlevel 1 goto:eof
 set /p answer="Do you want to install %target% in your system? [Y/N] "
 if "%answer%"=="" goto:no
 if /I "%answer:~0,1%"=="y" goto:yes
@@ -31,7 +37,7 @@ if /I "%answer:~0,1%"=="y" goto:yes
 echo Cancelled.
 goto:eof
 :yes
-copy %target% %windir%\system32\ >nul 2>&1
+copy %target% %windir%\system32\%dest% >nul 2>&1
 if errorlevel 1 goto:cannotcopy
 for /f %%i in ('ver ^| %windir%\system32\find "Version 5"') do set nt5=yes
 if not exist %windir%\system32\reg.exe goto:manualreg
@@ -40,7 +46,7 @@ reg add %key% /f >nul 2>&1
 if errorlevel 1 goto:cannotreg
 reg add %key% /f /v "Layout Text" /t REG_SZ /d %shortname% >nul 2>&1
 reg add %key% /f /v "Layout Display Name" /t REG_SZ /d %longname% >nul 2>&1
-reg add %key% /f /v "Layout File" /t REG_SZ /d "%target%" >nul 2>&1
+reg add %key% /f /v "Layout File" /t REG_SZ /d "%dest%" >nul 2>&1
 reg add %key% /f /v "Layout Id" /t REG_SZ /d %lid% >nul 2>&1
 if errorlevel 1 goto:cannotreg
 if not x%nt5%==xyes reg_layout r 0x%id:~4,4%:0x%id%
@@ -53,7 +59,7 @@ echo.>>_install.reg
 echo [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layouts\%id%]>>_install.reg
 echo "Layout Text"=%shortname%>>_install.reg
 echo "Layout Display Name"=%longname%>>_install.reg
-echo "Layout File"="%target%">>_install.reg
+echo "Layout File"="%dest%">>_install.reg
 echo "Layout Id"="%lid%">>_install.reg
 _install.reg
 if errorlevel 1 goto:cannotreg
