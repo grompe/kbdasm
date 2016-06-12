@@ -12,6 +12,7 @@ struc pstr [text*]
 entry main
 
 STD_OUTPUT_HANDLE = 0FFFFFFF5h
+KLF_ACTIVATE      = 1
 
 section ".text" readable executable
 
@@ -64,6 +65,12 @@ main:
     call  [InstallLayoutOrTip]
     test  eax, eax
     jz    .install_error
+    lea   eax, [_layout + 9]
+    push  KLF_ACTIVATE
+    push  eax
+    call  [LoadKeyboardLayoutW]
+    test  eax, eax
+    jz    .load_error
     mov   eax, _op_success
     call  write_pstr
     push  0
@@ -73,6 +80,10 @@ main:
     call  write_pstr
 .show_usage:
     mov   eax, _usage
+    call  write_pstr
+    jmp   .exit_err
+.load_error:
+    mov   eax, _load_error
     call  write_pstr
     jmp   .exit_err
 .install_error:
@@ -161,6 +172,7 @@ _usage pstr "Register layout:",13,10,\
             "  reg_layout r 0x0419:0x12340419",13,10,\
             "Unregister layout:",13,10,\
             "  reg_layout u 0x0419:0x12340419",13,10
+_load_error pstr "Error: LoadKeyboardLayoutW function returned an error",13,10
 _op_error pstr "Error: InstallLayoutOrTip function returned an error",13,10
 _op_success pstr "Operation successful",13,10
 
