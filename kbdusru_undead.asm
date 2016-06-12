@@ -3,8 +3,13 @@
 ; kbdusru_undead - US/RU hybrid keyboard layout with Caps Lock set to switch
 ;                  languages and "undead keys" for additional symbols
 
-format PE64 DLL native 5.0 at 5ffffff0000h on "nul" as "dll" ; Build for 64-bit Windows
-;format PE DLL native 5.0 at 5fff0000h on "nul" as "dll" ; Build for 32-bit Windows or WOW64
+include "detect_%processor_architecture%.inc"
+
+if SYSTEM_64BIT
+  format PE64 DLL native 5.0 at 5ffffff0000h on "nul" as "dll" ; Build for 64-bit Windows
+else
+  format PE DLL native 5.0 at 5fff0000h on "nul" as "dll" ; Build for 32-bit Windows or WOW64
+end if
 
 MAKE_DLL equ 1
 

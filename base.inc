@@ -1,4 +1,4 @@
-; Detect between 32 and 64 bits
+; Detect whether we're assembling in 32 or 64 bits
 virtual at 0
   xchg eax,eax
   detected_32bit = $-2

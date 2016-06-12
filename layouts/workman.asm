@@ -4,8 +4,13 @@
 ; http://www.workmanlayout.com/forum/
 ; https://viralintrospection.wordpress.com/2010/09/06/a-different-philosophy-in-designing-keyboard-layouts/
 
-format PE64 DLL native 5.0 at 0x0000000180000000 on "nul" as "dll" ; Build for 64-bit Windows
-;format PE DLL native 5.0 at 0x80000000 on "nul" as "dll" ; Build for 32-bit Windows or WOW64
+include "../detect_%processor_architecture%.inc"
+
+if SYSTEM_64BIT
+  format PE64 DLL native 5.0 at 0x0000000180000000 on "nul" as "dll" ; Build for 64-bit Windows
+else
+  format PE DLL native 5.0 at 0x18000000 on "nul" as "dll" ; Build for 32-bit Windows or WOW64
+end if
 
 WORKMAN_PROGRAMMER = 0 ; Set to 1 to swap 1234567890 and !@#$%^&*()
 WORKMAN_UK = 0 ; Set to 1 for UK layout

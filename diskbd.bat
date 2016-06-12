@@ -553,21 +553,17 @@ end virtual
 ; ----------------------------------------------------------------------------
 
 db 0EFh,0BBh,0BFh,'="utf8"',13,10
-if machine = MACHINE_64BIT
-  db "format PE64 DLL native 5.0 at "
-  db_hex 64,image_base
-  db ' on "nul" as "dll" ; Build for 64-bit Windows',13,10
-  db ";format PE DLL native 5.0 at "
-  db_hex 32,image_base
-  db ' on "nul" as "dll" ; Build for 32-bit Windows or WOW64',13,10
-else
-  db "format PE DLL native 5.0 at "
-  db_hex 32,image_base
-  db ' on "nul" as "dll" ; Build for 32-bit Windows or WOW64',13,10
-  db ";format PE64 DLL native 5.0 at "
-  db_hex 64,image_base
-  db ' on "nul" as "dll" ; Build for 64-bit Windows',13,10
-end if
+db 'include "detect_%processor_architecture%.inc"',13,10
+db 13,10
+db 'if SYSTEM_64BIT',13,10
+db "  format PE64 DLL native 5.0 at "
+db_hex 64,image_base
+db ' on "nul" as "dll" ; Build for 64-bit Windows',13,10
+db 'else',13,10
+db "  format PE DLL native 5.0 at "
+db_hex 32,image_base
+db ' on "nul" as "dll" ; Build for 32-bit Windows or WOW64',13,10
+db 'end if',13,10
 
 db 13,10
 db 'MAKE_DLL equ 1',13,10
