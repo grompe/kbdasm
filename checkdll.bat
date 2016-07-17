@@ -14,10 +14,7 @@ if not %sig%==50 goto:notvalid
 set /a h=0x%pe%+4
 call:tohex %h%
 for /f "tokens=3" %%i in ('fc /b __dummy__.txt %target% ^| %windir%\system32\find "00%hex%:"') do set arch=%%i
-if %processor_architecture%==x86 goto:x86
-if %processor_architecture%==AMD64 goto:amd64
-del __dummy__.txt
-exit /b 1
+if exist "%programfiles(x86)%" goto:amd64
 :x86
 if not %arch%==4C goto:badarch_need_x86
 goto:cleanup

@@ -3,7 +3,7 @@
 ; kbdusru_undead - US/RU hybrid keyboard layout with Caps Lock set to switch
 ;                  languages and "undead keys" for additional symbols
 
-include "detect_%processor_architecture%.inc"
+include "detect_%arch%.inc"
 
 if SYSTEM_64BIT
   format PE64 DLL native 5.0 at 5ffffff0000h on "nul" as "dll" ; Build for 64-bit Windows

@@ -553,7 +553,7 @@ end virtual
 ; ----------------------------------------------------------------------------
 
 db 0EFh,0BBh,0BFh,'="utf8"',13,10
-db 'include "detect_%processor_architecture%.inc"',13,10
+db 'include "detect_%arch%.inc"',13,10
 db 13,10
 db 'if SYSTEM_64BIT',13,10
 db "  format PE64 DLL native 5.0 at "
