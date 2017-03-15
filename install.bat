@@ -85,7 +85,7 @@ control
 goto:eof
 :notadmin
 echo To install, you must run this command with administrative privilegies.
-cscript elevate.js "%~df0" %* >nul
+cscript /nologo /e:javascript elevate.js "%~df0" %* >nul
 goto:eof
 :relaunch64
 %windir%\sysnative\cmd.exe /c "%~df0" %*
